@@ -1,4 +1,4 @@
-package vjezbe.enitet;
+package vjezbe.entitet;
 
 import java.math.BigDecimal;
 

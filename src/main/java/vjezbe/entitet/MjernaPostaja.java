@@ -1,10 +1,27 @@
-package vjezbe.enitet;
+package vjezbe.entitet;
+
+import vjezbe.entitet.senzori.Senzor;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MjernaPostaja {
 
     private String naziv;
     private Mjesto mjesto;
     private GeografskaTocka geografskaTocka;
+    private List<Senzor> senzori = new ArrayList<>();
+
+    public MjernaPostaja() {
+    }
+
+    public MjernaPostaja(String naziv, Mjesto mjesto, GeografskaTocka geografskaTocka, List<Senzor> senzori) {
+        this.naziv = naziv;
+        this.mjesto = mjesto;
+        this.geografskaTocka = geografskaTocka;
+        this.senzori = senzori;
+    }
 
     public MjernaPostaja(String naziv, Mjesto mjesto, GeografskaTocka geografskaTocka) {
         this.naziv = naziv;
@@ -14,6 +31,14 @@ public class MjernaPostaja {
 
     public String getNaziv() {
         return naziv;
+    }
+
+    public List<Senzor> getSenzori() {
+        return senzori;
+    }
+
+    public void setSenzori(List<Senzor> senzori) {
+        this.senzori = senzori;
     }
 
     public void setNaziv(String naziv) {
@@ -34,5 +59,10 @@ public class MjernaPostaja {
 
     public void setGeografskaTocka(GeografskaTocka geografskaTocka) {
         this.geografskaTocka = geografskaTocka;
+    }
+
+    public List<Senzor> dohvatiSenzore() {
+        return Arrays.sort(senzori, (p1, p2) ->
+                p1.getMjernaJedinica().compareTo(p2.getMjernaJedinica()));
     }
 }
