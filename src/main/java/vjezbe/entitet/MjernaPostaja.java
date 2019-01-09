@@ -1,10 +1,9 @@
 package vjezbe.entitet;
 
 import vjezbe.entitet.senzori.Senzor;
+import vjezbe.util.CustomComparator;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class MjernaPostaja {
 
@@ -62,7 +61,7 @@ public class MjernaPostaja {
     }
 
     public List<Senzor> dohvatiSenzore() {
-        return Arrays.sort(senzori, (p1, p2) ->
-                p1.getMjernaJedinica().compareTo(p2.getMjernaJedinica()));
+        Collections.sort(senzori, new CustomComparator());
+        return senzori;
     }
 }

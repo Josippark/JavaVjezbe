@@ -94,6 +94,7 @@ public class Glavna {
 
     public static void ispisMjernihPostaja(List<MjernaPostaja> listaMjernihPostaja) {
         int i;
+        int j;
         for (i = 0; i < listaMjernihPostaja.size(); i++) {
 
             System.out.println("Naziv" + i + ". mjerne postaje:" +
@@ -106,6 +107,10 @@ public class Glavna {
                     listaMjernihPostaja.get(i).getGeografskaTocka().getX());
             System.out.println("Geo tocka y koordinata" + i + ". mjerne postaje:" +
                     listaMjernihPostaja.get(i).getGeografskaTocka().getY());
+            for(j=0;j<3;j++){
+                System.out.println("Senzori su: "+ listaMjernihPostaja.get(i).dohvatiSenzore().get(j).dohvatiPodatkeSenzora());
+            }
+
         }
     }
 }
