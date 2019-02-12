@@ -5,9 +5,11 @@ import vjezbe.entitet.senzori.Senzor;
 import vjezbe.entitet.senzori.impl.SenzorTemperature;
 import vjezbe.entitet.senzori.impl.SenzorTlaka;
 import vjezbe.entitet.senzori.impl.SenzorVlage;
+import vjezbe.util.Validator;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,10 +18,8 @@ public class Glavna {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        List<MjernaPostaja> listaMjernihPostaja = new ArrayList<MjernaPostaja>();
-
+        List<MjernaPostaja> listaMjernihPostaja = new ArrayList<>();
         unosMjernihPostaja(scanner, listaMjernihPostaja);
-
         ispisMjernihPostaja(listaMjernihPostaja);
 
 
@@ -34,6 +34,7 @@ public class Glavna {
                 System.out.println("Unesite naziv " + i + ". radio sondažne mjerne postaje:");
             }
 
+            //UNOS POTREBNIH PODATAKA
             String nazivMjernePostaje = scanner.nextLine();
             System.out.println("Unesite naziv mjesta:");
             String nazivMjesta = scanner.nextLine();
@@ -41,37 +42,31 @@ public class Glavna {
             String nazivZupanije = scanner.nextLine();
             System.out.println("Unesite naziv države:");
             String nazivDrzave = scanner.nextLine();
-            System.out.println("Unesite površinu države:");
-            BigDecimal povrsinaDrzave = scanner.nextBigDecimal();
-            scanner.nextLine();
-            System.out.println("Unesite x koordinatu:");
-            BigDecimal kordX = scanner.nextBigDecimal();
-            scanner.nextLine();
-            System.out.println("Unesite y koordinatu:");
-            BigDecimal kordY = scanner.nextBigDecimal();
-            scanner.nextLine();
+
+
+            BigDecimal povrsinaDrzave = Validator.checkBigDecimal(scanner, new BigDecimal(0), "Unesite površinu države:");
+            BigDecimal kordX = Validator.checkBigDecimal(scanner, new BigDecimal(0), "Unesite X koordinatu:");
+            BigDecimal kordY = Validator.checkBigDecimal(scanner, new BigDecimal(0), "Unesite Y koordinatu:");
+
             System.out.println("Unesite naziv komponente senzore:");
             String nazivSenzora = scanner.nextLine();
-            System.out.println("Unesite vrijednost senzora temperature:");
-            BigDecimal vrijednostSenzoraTemp = scanner.nextBigDecimal();
-            scanner.nextLine();
-            System.out.println("Unesite vrijednost senzora vlage:");
-            BigDecimal vrijednostSenzoraVlage = scanner.nextBigDecimal();
-            scanner.nextLine();
-            System.out.println("Unesite vrijednost senzora tlaka:");
-            BigDecimal vrijednostSenzoraTlaka = scanner.nextBigDecimal();
-            scanner.nextLine();
 
+            BigDecimal vrijednostSenzoraTemp = Validator.checkBigDecimal(scanner, new BigDecimal(0), "Unesite vrijednost senzora temperature:");
+            BigDecimal vrijednostSenzoraVlage = Validator.checkBigDecimal(scanner, new BigDecimal(0), "Unesite vrijednost senzora vlage:");
+            BigDecimal vrijednostSenzoraTlaka = Validator.checkBigDecimal(scanner, new BigDecimal(0), "Unesite vrijednost senzora tlaka:");
+
+            //INSTANCIRANJE SENZORA
             SenzorTemperature senzorTemperature = new SenzorTemperature(vrijednostSenzoraTemp, nazivSenzora);
             SenzorVlage senzorVlage = new SenzorVlage(vrijednostSenzoraVlage);
             SenzorTlaka senzorTlaka = new SenzorTlaka(vrijednostSenzoraTlaka);
 
+            //DODAVANJE U LISTU
             List<Senzor> senzori = new ArrayList<>();
             senzori.add(senzorTemperature);
             senzori.add(senzorVlage);
             senzori.add(senzorTlaka);
 
-
+            //INSTANCIRANJE OSTALIH OBJEKATA
             GeografskaTocka geografskaTocka = new GeografskaTocka(kordX, kordY);
             Drzava drzava = new Drzava(nazivDrzave, povrsinaDrzave);
             Zupanija zupanija = new Zupanija(nazivZupanije, drzava);
@@ -92,24 +87,25 @@ public class Glavna {
     }
 
 
+
     public static void ispisMjernihPostaja(List<MjernaPostaja> listaMjernihPostaja) {
         int i;
         int j;
         for (i = 0; i < listaMjernihPostaja.size(); i++) {
-
-            System.out.println("Naziv" + i + ". mjerne postaje:" +
+            System.out.println("Naziv " + (i + 1) + ". mjerne postaje:" +
                     listaMjernihPostaja.get(i).getNaziv());
-            System.out.println("Mjesto " + i + ". mjerne postaje:" +
+            System.out.println("Mjesto " + (i + 1) + ". mjerne postaje: " +
                     listaMjernihPostaja.get(i).getMjesto().getNaziv() + ", županija " +
                     listaMjernihPostaja.get(i).getMjesto().getZupanija().getNaziv() + ", država " +
                     listaMjernihPostaja.get(i).getMjesto().getZupanija().getDrzava().getNaziv());
-            System.out.println("Geo tocka x koordinata" + i + ". mjerne postaje:" +
+            System.out.println("Geografska tocka X koordinata" + (i + 1) + ". mjerne postaje: " +
                     listaMjernihPostaja.get(i).getGeografskaTocka().getX());
-            System.out.println("Geo tocka y koordinata" + i + ". mjerne postaje:" +
+            System.out.println("Geografska tocka Y koordinata" + (i + 1) + ". mjerne postaje: " +
                     listaMjernihPostaja.get(i).getGeografskaTocka().getY());
-            for(j=0;j<3;j++){
-                System.out.println("Senzori su: "+ listaMjernihPostaja.get(i).dohvatiSenzore().get(j).dohvatiPodatkeSenzora());
+            for (j = 0; j < 3; j++) {
+                System.out.println(listaMjernihPostaja.get(i).dohvatiSenzore().get(j).dohvatiPodatkeSenzora());
             }
+            System.out.println("--------------------------------------------------------------------------------------");
 
         }
     }
