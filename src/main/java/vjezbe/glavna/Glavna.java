@@ -1,28 +1,41 @@
 package vjezbe.glavna;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import vjezbe.entitet.*;
 import vjezbe.entitet.senzori.Senzor;
 import vjezbe.entitet.senzori.impl.SenzorTemperature;
 import vjezbe.entitet.senzori.impl.SenzorTlaka;
 import vjezbe.entitet.senzori.impl.SenzorVlage;
+import vjezbe.iznimke.NiskaTemperaturaException;
+import vjezbe.iznimke.VisokaTemperaturaException;
 import vjezbe.util.Validator;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 public class Glavna {
+    private static final Logger logger = LoggerFactory.getLogger(Glavna.class);
 
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
         List<MjernaPostaja> listaMjernihPostaja = new ArrayList<>();
         unosMjernihPostaja(scanner, listaMjernihPostaja);
         ispisMjernihPostaja(listaMjernihPostaja);
+        while (true) {
+            try {
+                SenzorTemperature.generirajVrijednost();
+                Thread.sleep(1000);
+            } catch (VisokaTemperaturaException | NiskaTemperaturaException ex) {
+                logger.info(ex.getMessage());
 
-
+            } catch (InterruptedException ex) {
+                logger.info("Interrupted exception");
+            }
+        }
     }
 
     public static void unosMjernihPostaja(Scanner scanner, List<MjernaPostaja> listaMjernihPostaja) {
@@ -47,13 +60,14 @@ public class Glavna {
             BigDecimal povrsinaDrzave = Validator.checkBigDecimal(scanner, new BigDecimal(0), "Unesite površinu države:");
             BigDecimal kordX = Validator.checkBigDecimal(scanner, new BigDecimal(0), "Unesite X koordinatu:");
             BigDecimal kordY = Validator.checkBigDecimal(scanner, new BigDecimal(0), "Unesite Y koordinatu:");
-
+            scanner.nextLine();
             System.out.println("Unesite naziv komponente senzore:");
             String nazivSenzora = scanner.nextLine();
 
             BigDecimal vrijednostSenzoraTemp = Validator.checkBigDecimal(scanner, new BigDecimal(0), "Unesite vrijednost senzora temperature:");
             BigDecimal vrijednostSenzoraVlage = Validator.checkBigDecimal(scanner, new BigDecimal(0), "Unesite vrijednost senzora vlage:");
             BigDecimal vrijednostSenzoraTlaka = Validator.checkBigDecimal(scanner, new BigDecimal(0), "Unesite vrijednost senzora tlaka:");
+            scanner.nextLine();
 
             //INSTANCIRANJE SENZORA
             SenzorTemperature senzorTemperature = new SenzorTemperature(vrijednostSenzoraTemp, nazivSenzora);
@@ -79,13 +93,9 @@ public class Glavna {
                 int visinaPostaje = scanner.nextInt();
                 listaMjernihPostaja.add(new RadioSondaznaMjernaPostaja(nazivMjernePostaje, mjesto, geografskaTocka, senzori, visinaPostaje));
             }
-
-
         }
 
-
     }
-
 
 
     public static void ispisMjernihPostaja(List<MjernaPostaja> listaMjernihPostaja) {
@@ -109,4 +119,5 @@ public class Glavna {
 
         }
     }
+
 }
