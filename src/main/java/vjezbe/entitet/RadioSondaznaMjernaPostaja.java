@@ -22,6 +22,10 @@ public class RadioSondaznaMjernaPostaja extends MjernaPostaja implements RadioSo
         this.visina = visina;
     }
 
+    public RadioSondaznaMjernaPostaja(String naziv, Mjesto mjesto, GeografskaTocka geografskaTocka, List<Senzor> senzori) {
+        super(naziv, mjesto, geografskaTocka, senzori);
+    }
+
     @Override
     public void podesiVisinuPostaje(int visina) {
         this.visina = visina;

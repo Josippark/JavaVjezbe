@@ -3,6 +3,7 @@ package vjezbe.entitet.senzori.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import vjezbe.entitet.RadSenzora;
 import vjezbe.entitet.senzori.Senzor;
 import vjezbe.iznimke.NiskaTemperaturaException;
 import vjezbe.iznimke.VisokaTemperaturaException;
@@ -18,8 +19,8 @@ public class SenzorTemperature extends Senzor {
     public static int generateNumber = 0;
     private static final Logger logger = LoggerFactory.getLogger(SenzorTemperature.class);
 
-    public SenzorTemperature(BigDecimal vrijednost, String naziv) {
-        super("C", vrijednost);
+    public SenzorTemperature(BigDecimal vrijednost, String naziv, RadSenzora radSenzora) {
+        super("C", vrijednost, radSenzora);
         this.naziv = naziv;
     }
 
@@ -32,7 +33,7 @@ public class SenzorTemperature extends Senzor {
     }
 
     public String dohvatiPodatkeSenzora() {
-        return "Naziv senzora je : " + getNaziv() + ", vrijednost senzora je: " + getVrijednost() + getMjernaJedinica();
+        return "Naziv senzora je : " + getNaziv() + ", vrijednost senzora je: " + getVrijednost() + getMjernaJedinica() + ", rad senzora je: " + getRadSenzora();
     }
 
     public static void generirajVrijednost() throws VisokaTemperaturaException, NiskaTemperaturaException {

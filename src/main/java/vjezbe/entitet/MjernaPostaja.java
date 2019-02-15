@@ -61,7 +61,7 @@ public class MjernaPostaja {
     }
 
     public List<Senzor> dohvatiSenzore() {
-        Collections.sort(senzori, new CustomComparator());
-        return senzori;
+        Comparator.comparing(Senzor::getMjernaJedinica);
+        return this.senzori;
     }
 }
